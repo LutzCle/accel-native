@@ -1,6 +1,10 @@
 accel-native
 ========
 
+The purpose of this crate is to provide a simple way to call native CUDA kernels
+compiled with NVCC from Rust stable. It is built on top of the awesome ['accel'
+crate](https://github.com/rust-accel/accel) by Toshiki Teramura.
+
 ## Usage
 
 Add the following to your `Cargo.toml`:
@@ -28,7 +32,7 @@ let module = Module::load_file(module_path).unwrap();
 
 // argument setup ...
 
-cuda!( module::add<<[Grid::x(1), Block::x(1)]>>(x) ).unwrap();
+cuda!( module::my_function<<[Grid::x(1), Block::x(1)]>>(x) ).unwrap();
 ```
 
 Note that CUDA kernels must be exported as C functions to prevent C++ name
@@ -36,14 +40,12 @@ mangling. This can be done by annotating the function with 'extern "C"':
 
 ```C
 extern "C"
-void my_function() {}
+__global__
+void my_function() { /* ... */ }
 ```
 
-## What is accel-native?
-
-The purpose of this crate is to provide a simple way to call native CUDA kernels
-compiled with NVCC from Rust stable. It is built on top of the awesome ['accel'
-crate](https://github.com/rust-accel/accel) by Toshiki Teramura.
+For a working example, see [the build file](./build.rs) and the [examples
+directory](./examples).
 
 ## Platforms
 
