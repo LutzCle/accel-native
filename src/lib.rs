@@ -17,12 +17,12 @@
 
 #[macro_export]
 macro_rules! cuda {
-    ($module:ident::$kernel_name:ident<<[$grid:expr, $block:expr]>>($($arg:expr),*)) => {
+    ($kernel_name:ident<<[$module:expr, $grid:expr, $block:expr]>>($($arg:expr),*)) => {
         {
-            let module: &::accel::module::Module = &$module;
+            let module: &self::accel::module::Module = &$module;
             let mut kernel = module.get_kernel(stringify!($kernel_name));
             let mut args = [
-                $(::accel::kernel::void_cast(&$arg),)*
+                $(self::accel::kernel::void_cast(&$arg),)*
             ];
             match &mut kernel {
                 Ok(k) => unsafe {
@@ -35,5 +35,13 @@ macro_rules! cuda {
                 Err(e) => Err(*e),
             }
         }
+    };
+    ([$module:expr]::$kernel_name:ident<<[$grid:expr, $block:expr]>>($($arg:expr),*)) => {
+
+        {
+            let module = $module;
+            cuda!(module::$kernel_name<<[$grid, $block]>>($($arg:expr,)*))
+        }
+
     };
 }

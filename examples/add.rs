@@ -48,7 +48,7 @@ fn main() {
     c[0] = 0 as i64;
 
     // Call CUDA kernel
-    cuda!( module::add<<[Grid::x(1), Block::x(1)]>>(a, b, c) )
+    cuda!( add<<[module, Grid::x(1), Block::x(1)]>>(a, b, c) )
         .expect("Cannot launch CUDA kernel");
 
     // Wait for completion
