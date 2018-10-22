@@ -9,3 +9,7 @@ readme = "README.md"
 
 [dev-dependencies]
 accel = "~0.2.0"
+
+[profile.release]
+debug = true
+opt-level = 3
