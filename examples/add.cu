@@ -15,7 +15,18 @@
  * limitations under the License.
  */
 
+#include <cstdint>
+
 extern "C"
 __global__ void add(int32_t a, int32_t b, int64_t* c) {
     *c = a + b;
+}
+
+extern "C"
+__global__ void vector_add(uint64_t len, int64_t *a, int64_t const* b) {
+
+    for (uint64_t i = 0; i < len; ++i) {
+        a[i] = a[i] + b[i];
+    }
+
 }
