@@ -23,6 +23,7 @@ fn main() {
 
     let args = vec![
 "./examples/add.cu",
+        "-std=c++11",
         "-fatbin",
         "-gencode", "arch=compute_30,code=sm_30", // Tesla K40
         "-gencode", "arch=compute_50,code=sm_50", // GTX 940M
